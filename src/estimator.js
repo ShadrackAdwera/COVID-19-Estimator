@@ -11,17 +11,17 @@ const covid19ImpactEstimator = (data) => {
       switch (periodType.toLowerCase()) {
         case 'days': {
           const requestedTime = timeToElapse * 1;
-          period = (requestedTime / 3).toFixed(0);
+          period = (requestedTime / 3);
           break;
         }
         case 'weeks': {
           const requestedTime = timeToElapse * 7;
-          period = (requestedTime / 3).toFixed();
+          period = (requestedTime / 3);
           break;
         }
         case 'months': {
           const requestedTime = timeToElapse * 30;
-          period = (requestedTime / 3).toFixed();
+          period = (requestedTime / 3);
           break;
         }
         default:
