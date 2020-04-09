@@ -16,18 +16,18 @@ const covid19ImpactEstimator = (data) => {
         }
         case 'weeks': {
           const requestedTime = timeToElapse * 7;
-          period = requestedTime / 3;
+          period = (requestedTime / 3).toFixed();
           break;
         }
         case 'months': {
           const requestedTime = timeToElapse * 30;
-          period = requestedTime / 3;
+          period = (requestedTime / 3).toFixed();
           break;
         }
         default:
           break;
       }
-      const infectionsByRequestedTime = (currentlyInfected * 2 ** period).toFixed(0);
+      const infectionsByRequestedTime = parseInt((currentlyInfected * 2 ** period).toFixed(0), 10);
     },
     severeImpact() {
       const currentlyInfected = reportedCases * 50;
