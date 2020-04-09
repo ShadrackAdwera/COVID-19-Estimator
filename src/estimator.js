@@ -19,7 +19,7 @@ const covid19ImpactEstimator = (data) => {
           period = requestedTime / 3;
           break;
         }
-        case 'month': {
+        case 'months': {
           const requestedTime = timeToElapse * 30;
           period = requestedTime / 3;
           break;
@@ -28,11 +28,6 @@ const covid19ImpactEstimator = (data) => {
           break;
       }
       const infectionsByRequestedTime = (currentlyInfected * 2 ** period).toFixed(0);
-      const severeCasesByRequestedTime = (0.15 * infectionsByRequestedTime).toFixed(0);
-      const hospitalBedsByRequestedTime = (totalHospitalBeds * 0.35).toFixed(0) - severeCasesByRequestedTime;
-      const casesForICUByRequestedTime = (infectionsByRequestedTime * 0.05).toFixed();
-      const casesForVentilatorsByRequestedTime = (infectionsByRequestedTime * 0.02).toFixed(0);
-      const dollarsInFlight = 0.65 * avgDailyIncomeInUSD * period;
     },
     severeImpact() {
       const currentlyInfected = reportedCases * 50;
@@ -57,11 +52,6 @@ const covid19ImpactEstimator = (data) => {
           break;
       }
       const infectionsByRequestedTime = (currentlyInfected * 2 ** period).toFixed(0);
-      const severeCasesByRequestedTime = (0.15 * infectionsByRequestedTime).toFixed(0);
-      const hospitalBedsByRequestedTime = (totalHospitalBeds * 0.35).toFixed(0) - severeCasesByRequestedTime;
-      const casesForICUByRequestedTime = (infectionsByRequestedTime * 0.05).toFixed();
-      const casesForVentilatorsByRequestedTime = (infectionsByRequestedTime * 0.02).toFixed(0);
-      const dollarsInFlight = 0.65 * avgDailyIncomeInUSD * period;
     }
   };
 };
