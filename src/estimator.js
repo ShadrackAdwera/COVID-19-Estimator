@@ -27,7 +27,7 @@ const covid19ImpactEstimator = (data) => {
       const infectionsByRequestedTime = (currentlyInfected * 2 ** period).toFixed(0);
     },
     severeImpact() {
-      const currentlyInfected = data.reportedCases * 10;
+      const currentlyInfected = data.reportedCases * 50;
       let period = 0;
       switch (data.periodType.toLowerCase()) {
         case 'days': {
