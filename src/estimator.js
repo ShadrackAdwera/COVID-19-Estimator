@@ -6,46 +6,40 @@ const covid19ImpactEstimator = (data) => {
   return {
     data: input,
     impact() {
-      const currentlyInfected = reportedCases * 10;
+      const currentlyInfected = data.reportedCases * 10;
       let period = 0;
-      switch (periodType.toLowerCase()) {
+      switch (data.periodType.toLowerCase()) {
         case 'days': {
-          const requestedTime = timeToElapse * 1;
-          period = (requestedTime / 3);
+          period = data.timeToElapse / 3;
           break;
         }
         case 'weeks': {
-          const requestedTime = timeToElapse * 7;
-          period = (requestedTime / 3);
+          period = (data.timeToElapse * 7) / 3;
           break;
         }
         case 'months': {
-          const requestedTime = timeToElapse * 30;
-          period = (requestedTime / 3);
+          period = (data.timeToElapse * 30) / 3;
           break;
         }
         default:
           break;
       }
-      const infectionsByRequestedTime = parseInt((currentlyInfected * 2 ** period).toFixed(0), 10);
+      const infectionsByRequestedTime = (currentlyInfected * 2 ** period).toFixed(0);
     },
     severeImpact() {
-      const currentlyInfected = reportedCases * 50;
+      const currentlyInfected = data.reportedCases * 10;
       let period = 0;
-      switch (periodType.toLowerCase()) {
+      switch (data.periodType.toLowerCase()) {
         case 'days': {
-          const requestedTime = timeToElapse * 1;
-          period = (requestedTime / 3).toFixed(0);
+          period = data.timeToElapse / 3;
           break;
         }
         case 'weeks': {
-          const requestedTime = timeToElapse * 7;
-          period = requestedTime / 3;
+          period = (data.timeToElapse * 7) / 3;
           break;
         }
-        case 'month': {
-          const requestedTime = timeToElapse * 30;
-          period = requestedTime / 3;
+        case 'months': {
+          period = (data.timeToElapse * 30) / 3;
           break;
         }
         default:
