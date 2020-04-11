@@ -5,6 +5,22 @@ const covid19ImpactEstimator = (data) => {
     region, periodType, timeToElapse, reportedCases, totalHospitalBeds
   } = data;
   // functions
+  function dollarsLost(timeSelected) {
+    const {
+      period
+    } = data;
+    switch (period.toLowerCase()) {
+      case 'days':
+        return timeSelected * 1;
+      case 'weeks':
+        return timeSelected * 7;
+      case 'months':
+        return timeSelected * 30;
+      default:
+        return timeSelected;
+    }
+  }
+
   function normalizeTime(timeSelected) {
     let period = 0;
     switch (periodType.toLowerCase()) {
@@ -34,7 +50,8 @@ const covid19ImpactEstimator = (data) => {
   const impactBedsByTime = Math.trunc((totalHospitalBeds * 0.35) - impactSvreByRequestedTime);
   const impactCasesForICU = Math.trunc((impactInfctsByTime * 0.05));
   const impactCasesForVentilators = Math.trunc((impactInfctsByTime * 0.02));
-  const impactDollarsInFlight = impactInfctsByTime * region.avgDailyIncomeInUSD * normalizedPeriod;
+  const losses = dollarsLost(timeToElapse) * region.avgDailyIncomeInUSD;
+  const impDollarsInFlight = impactInfctsByTime * region.avgDailyIncomePopulation * losses;
 
 
   // severe impact variables
@@ -44,7 +61,7 @@ const covid19ImpactEstimator = (data) => {
   const severeImpactBeds = Math.trunc((totalHospitalBeds * 0.35) - svImpactSevereRequestedTime);
   const severeImpactCasesForICUByRequestedTime = Math.trunc((svInfections * 0.05));
   const severeImpactVentilators = Math.trunc((svInfections * 0.02));
-  const sDollarsInFlight = svInfections * region.avgDailyIncomeInUSD * normalizedPeriod;
+  const svDollarsInFlight = svInfections * region.avgDailyIncomePopulation * losses;
 
   return {
     data: input,
@@ -55,7 +72,7 @@ const covid19ImpactEstimator = (data) => {
       hospitalBedsByRequestedTime: impactBedsByTime,
       casesForICUByRequestedTime: impactCasesForICU,
       casesForVentilatorsByRequestedTime: impactCasesForVentilators,
-      dollarsInFlight: impactDollarsInFlight
+      dollarsInFlight: impDollarsInFlight
     },
     severeImpact: {
       currentlyInfected: severeCurrentlyInfected,
@@ -64,7 +81,7 @@ const covid19ImpactEstimator = (data) => {
       hospitalBedsByRequestedTime: severeImpactBeds,
       casesForICUByRequestedTime: severeImpactCasesForICUByRequestedTime,
       casesForVentilatorsByRequestedTime: severeImpactVentilators,
-      dollarsInFlight: sDollarsInFlight
+      dollarsInFlight: svDollarsInFlight
 
     }
   };
