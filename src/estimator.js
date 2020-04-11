@@ -28,22 +28,23 @@ const covid19ImpactEstimator = (data) => {
 
   // impact variables
   const normalizedPeriod = normalizeTime(timeToElapse);
-  const impactCurrentlyInfected = reportedCases * 10;
-  const impactInfctsByTime = (impactCurrentlyInfected * 2 ** normalizedPeriod).toFixed(0);
-  const impactSvreByRequestedTime = (0.15 * impactInfctsByTime).toFixed(0);
-  const impactBedsByTime = (totalHospitalBeds * 0.35).toFixed(0) - impactSvreByRequestedTime;
-  const impactCasesForICUByRequestedTime = (impactInfctsByTime * 0.05).toFixed();
-  const impactCasesForVentilatorsByRequestedTime = (impactInfctsByTime * 0.02).toFixed(0);
+  const impactInfected = reportedCases * 10;
+  const impactInfctsByTime = Math.floor((impactInfected * 2 ** normalizedPeriod));
+  const impactSvreByRequestedTime = Math.floor((0.15 * impactInfctsByTime));
+  const impactBedsByTime = Math.floor((totalHospitalBeds * 0.35) - impactSvreByRequestedTime);
+  const impactCasesForICU = Math.floor((impactInfctsByTime * 0.05));
+  const impactCasesForVentilators = Math.floor((impactInfctsByTime * 0.02));
   const impactDollarsInFlight = impactInfctsByTime * region.avgDailyIncomeInUSD * normalizedPeriod;
+
 
   // severe impact variables
   const severeCurrentlyInfected = data.reportedCases * 50;
-  const svImpactInfectionsByTime = (severeCurrentlyInfected * 2 ** normalizedPeriod).toFixed(0);
-  const svImpactSevereRequestedTime = (0.15 * svImpactInfectionsByTime).toFixed(0);
-  const severeImpactBeds = (totalHospitalBeds * 0.35).toFixed(0) - svImpactSevereRequestedTime;
-  const severeImpactCasesForICUByRequestedTime = (svImpactInfectionsByTime * 0.05).toFixed();
-  const severeImpactVentilators = (svImpactInfectionsByTime * 0.02).toFixed(0);
-  const sDollarsInFlight = svImpactInfectionsByTime * region.avgDailyIncomeInUSD * normalizedPeriod;
+  const svInfections = Math.floor((severeCurrentlyInfected * 2 ** normalizedPeriod));
+  const svImpactSevereRequestedTime = Math.floor(0.15 * svInfections);
+  const severeImpactBeds = Math.floor((totalHospitalBeds * 0.35) - svImpactSevereRequestedTime);
+  const severeImpactCasesForICUByRequestedTime = Math.floor((svInfections * 0.05));
+  const severeImpactVentilators = Math.floor((svInfections * 0.02));
+  const sDollarsInFlight = svInfections * region.avgDailyIncomeInUSD * normalizedPeriod;
 
   return {
     data: input,
@@ -51,12 +52,12 @@ const covid19ImpactEstimator = (data) => {
       infectionsByRequestedTime: impactInfctsByTime,
       severeCasesByRequestedTime: impactSvreByRequestedTime,
       hospitalBedsByRequestedTime: impactBedsByTime,
-      casesForICUByRequestedTime: impactCasesForICUByRequestedTime,
-      casesForVentilatorsByRequestedTime: impactCasesForVentilatorsByRequestedTime,
+      casesForICUByRequestedTime: impactCasesForICU,
+      casesForVentilatorsByRequestedTime: impactCasesForVentilators,
       dollarsInFlight: impactDollarsInFlight
     },
     severeImpact: {
-      infectionsByRequestedTime: svImpactInfectionsByTime,
+      infectionsByRequestedTime: svInfections,
       severeCasesByRequestedTime: svImpactSevereRequestedTime,
       hospitalBedsByRequestedTime: severeImpactBeds,
       casesForICUByRequestedTime: severeImpactCasesForICUByRequestedTime,
