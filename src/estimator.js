@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 
 const covid19ImpactEstimator = (data) => {
   const input = data;
@@ -30,39 +29,39 @@ const covid19ImpactEstimator = (data) => {
   // impact variables
   const normalizedPeriod = normalizeTime(timeToElapse);
   const impactCurrentlyInfected = reportedCases * 10;
-  const impactInfectionsByRequestedTime = (impactCurrentlyInfected * 2 ** normalizedPeriod).toFixed(0);
-  const impactSevereCasesByRequestedTime = (0.15 * impactInfectionsByRequestedTime).toFixed(0);
-  const impactHospitalBedsByRequestedTime = (totalHospitalBeds * 0.35).toFixed(0) - impactSevereCasesByRequestedTime;
-  const impactCasesForICUByRequestedTime = (impactInfectionsByRequestedTime * 0.05).toFixed();
-  const impactCasesForVentilatorsByRequestedTime = (impactInfectionsByRequestedTime * 0.02).toFixed(0);
-  const impactDollarsInFlight = impactInfectionsByRequestedTime * region.avgDailyIncomeInUSD * normalizedPeriod;
+  const impactInfctsByTime = (impactCurrentlyInfected * 2 ** normalizedPeriod).toFixed(0);
+  const impactSvreByRequestedTime = (0.15 * impactInfctsByTime).toFixed(0);
+  const impactBedsByTime = (totalHospitalBeds * 0.35).toFixed(0) - impactSvreByRequestedTime;
+  const impactCasesForICUByRequestedTime = (impactInfctsByTime * 0.05).toFixed();
+  const impactCasesForVentilatorsByRequestedTime = (impactInfctsByTime * 0.02).toFixed(0);
+  const impactDollarsInFlight = impactInfctsByTime * region.avgDailyIncomeInUSD * normalizedPeriod;
 
   // severe impact variables
-  const severeImpactCurrentlyInfected = data.reportedCases * 50;
-  const severeImpactInfectionsByRequestedTime = (severeImpactCurrentlyInfected * 2 ** normalizedPeriod).toFixed(0);
-  const severeImpactSevereCasesByRequestedTime = (0.15 * severeImpactInfectionsByRequestedTime).toFixed(0);
-  const severeImpactHospitalBedsByRequestedTime = (totalHospitalBeds * 0.35).toFixed(0) - severeImpactSevereCasesByRequestedTime;
-  const severeImpactCasesForICUByRequestedTime = (severeImpactInfectionsByRequestedTime * 0.05).toFixed();
-  const severeImpactCasesForVentilatorsByRequestedTime = (severeImpactInfectionsByRequestedTime * 0.02).toFixed(0);
-  const severeImpactDollarsInFlight = severeImpactInfectionsByRequestedTime * region.avgDailyIncomeInUSD * normalizedPeriod;
+  const severeCurrentlyInfected = data.reportedCases * 50;
+  const svImpactInfectionsByTime = (severeCurrentlyInfected * 2 ** normalizedPeriod).toFixed(0);
+  const svImpactSevereRequestedTime = (0.15 * svImpactInfectionsByTime).toFixed(0);
+  const severeImpactBeds = (totalHospitalBeds * 0.35).toFixed(0) - svImpactSevereRequestedTime;
+  const severeImpactCasesForICUByRequestedTime = (svImpactInfectionsByTime * 0.05).toFixed();
+  const severeImpactVentilators = (svImpactInfectionsByTime * 0.02).toFixed(0);
+  const sDollarsInFlight = svImpactInfectionsByTime * region.avgDailyIncomeInUSD * normalizedPeriod;
 
   return {
     data: input,
     impact: {
-      infectionsByRequestedTime: impactInfectionsByRequestedTime,
-      severeCasesByRequestedTime: impactSevereCasesByRequestedTime,
-      hospitalBedsByRequestedTime: impactHospitalBedsByRequestedTime,
+      infectionsByRequestedTime: impactInfctsByTime,
+      severeCasesByRequestedTime: impactSvreByRequestedTime,
+      hospitalBedsByRequestedTime: impactBedsByTime,
       casesForICUByRequestedTime: impactCasesForICUByRequestedTime,
       casesForVentilatorsByRequestedTime: impactCasesForVentilatorsByRequestedTime,
       dollarsInFlight: impactDollarsInFlight
     },
     severeImpact: {
-      infectionsByRequestedTime: severeImpactInfectionsByRequestedTime,
-      severeCasesByRequestedTime: severeImpactSevereCasesByRequestedTime,
-      hospitalBedsByRequestedTime: severeImpactHospitalBedsByRequestedTime,
+      infectionsByRequestedTime: svImpactInfectionsByTime,
+      severeCasesByRequestedTime: svImpactSevereRequestedTime,
+      hospitalBedsByRequestedTime: severeImpactBeds,
       casesForICUByRequestedTime: severeImpactCasesForICUByRequestedTime,
-      casesForVentilatorsByRequestedTime: severeImpactCasesForVentilatorsByRequestedTime,
-      dollarsInFlight: severeImpactDollarsInFlight
+      casesForVentilatorsByRequestedTime: severeImpactVentilators,
+      dollarsInFlight: sDollarsInFlight
 
     }
   };
