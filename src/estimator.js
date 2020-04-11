@@ -9,7 +9,7 @@ const covid19ImpactEstimator = (data) => {
     const {
       period
     } = data;
-    switch (period.toLowerCase()) {
+    switch (period) {
       case 'days':
         return timeSelected * 1;
       case 'weeks':
