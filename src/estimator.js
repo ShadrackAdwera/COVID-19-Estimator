@@ -23,7 +23,7 @@ const covid19ImpactEstimator = (data) => {
       default:
         break;
     }
-    return period;
+    return Math.floor(period);
   }
 
   // impact variables
