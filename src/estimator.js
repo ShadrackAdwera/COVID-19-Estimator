@@ -13,9 +13,9 @@ const covid19ImpactEstimator = (data) => {
       case 'days':
         return timeSelected * 1;
       case 'months':
-        return timeSelected * 30;
+        return Number(timeSelected) / 30;
       case 'weeks':
-        return timeSelected * 7;
+        return Number(timeSelected) / 7;
       default:
         return timeSelected;
     }
