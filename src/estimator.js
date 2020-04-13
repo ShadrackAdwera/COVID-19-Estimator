@@ -10,6 +10,8 @@ const covid19ImpactEstimator = (data) => {
       timePeriod
     } = data;
     switch (timePeriod) {
+      case 'days':
+        return timeSelected * 1;
       case 'months':
         return timeSelected * 30;
       case 'weeks':
@@ -57,7 +59,7 @@ const covid19ImpactEstimator = (data) => {
   const severeImpactBeds = Math.trunc((totalHospitalBeds * 0.35) - svImpactSevereRequestedTime);
   const severeImpactCasesForICUByRequestedTime = Math.trunc((svInfections * 0.05));
   const severeImpactVentilators = Math.trunc((svInfections * 0.02));
-  const svDollarsInFlight = svInfections * region.avgDailyIncomePopulation * i;
+  const svDollarsInFlight = Math.trunc(svInfections * region.avgDailyIncomePopulation * i);
 
   return {
     data: input,
