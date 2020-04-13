@@ -21,7 +21,7 @@ router.post('/', (req, res, next) => {
 
   };
   res.status(201).json({
-    informaton: estimator(info)
+    information: estimator(info)
   });
 });
 
