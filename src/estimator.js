@@ -6,24 +6,17 @@ const covid19ImpactEstimator = (data) => {
   } = data;
   // functions
   function dollarsLost(timeSelected) {
-    let period = 0;
-    switch (periodType.toLowerCase()) {
-      case 'days': {
-        period = timeSelected * 1;
-        break;
-      }
-      case 'weeks': {
-        period = timeSelected * 7;
-        break;
-      }
-      case 'months': {
-        period = timeSelected * 30;
-        break;
-      }
+    const {
+      timePeriod
+    } = data;
+    switch (timePeriod) {
+      case 'months':
+        return timeSelected * 30;
+      case 'weeks':
+        return timeSelected * 7;
       default:
-        break;
+        return timeSelected;
     }
-    return Math.trunc(period);
   }
 
   function normalizeTime(timeSelected) {
