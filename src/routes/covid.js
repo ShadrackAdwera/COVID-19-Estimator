@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 const express = require('express');
 
+const estimator = require('../estimator');
+
 const router = express.Router();
 
 router.post('/', (req, res, next) => {
@@ -19,8 +21,7 @@ router.post('/', (req, res, next) => {
 
   };
   res.status(201).json({
-    createdInfo: info
-
+    informaton: estimator(info)
   });
 });
 
