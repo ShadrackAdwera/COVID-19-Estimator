@@ -15,7 +15,6 @@ const Statistics = require('../models/statistics');
 
 router.post('', (req, res) => {
   const stats = new Statistics({
-    _id: new mongoose.Types.ObjectId(),
     region: {
       name: req.body.region.name,
       avgAge: req.body.region.avgAge,
@@ -34,7 +33,7 @@ router.post('', (req, res) => {
     });
   });
   res.status(201).json({
-    information: estimator(stats)
+    stats: estimator(stats)
   });
 });
 
@@ -59,7 +58,7 @@ router.post('/json', (req, res) => {
     });
   });
   res.status(201).json({
-    information: estimator(stats)
+    stats: estimator(stats)
   });
 });
 

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const regionSchema = mongoose.Schema({
+  _id: 0,
   name: String,
   avgAge: Number,
   avgDailyIncomeInUSD: Number,
@@ -8,7 +9,7 @@ const regionSchema = mongoose.Schema({
 });
 
 const statsSchema = mongoose.Schema({
-  _id: mongoose.Types.ObjectId,
+  _id: 0,
   region: regionSchema,
   periodType: String,
   timeToElapse: Number,
