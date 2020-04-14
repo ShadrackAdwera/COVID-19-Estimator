@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 
 const express = require('express');
 
@@ -14,7 +13,7 @@ const router = express.Router();
 
 const Statistics = require('../models/statistics');
 
-router.post('', (req, res, next) => {
+router.post('', (req, res) => {
   const stats = new Statistics({
     _id: new mongoose.Types.ObjectId(),
     region: {
@@ -41,7 +40,7 @@ router.post('', (req, res, next) => {
   });
 });
 
-router.post('/json', (req, res, next) => {
+router.post('/json', (req, res) => {
   const stats = new Statistics({
     _id: new mongoose.Types.ObjectId(),
     region: {
@@ -158,14 +157,14 @@ router.post('/xml', (req, res, next) => {
 
 router.get('/logs', (req, res, next) => {
   res.setHeader('content-type', 'text/plain');
-  const path = process.cwd();
-  const data = fs.readFileSync(`${path}/access.log`, 'utf8');
-  const lines = data.split('\n');
+  const pathUrl = process.cwd();
+  const dataRead = fs.readFileSync(`${pathUrl}/access.log`, 'utf8');
+  const newSpace = dataRead.split('\n');
 
-  lines.splice(-1, 1);
+  newSpace.splice(-1, 1);
 
-  const finalData = lines.join('\n');
-  res.end(finalData);
+  const display = newSpace.join('\n');
+  res.end(display);
   next();
 });
 
