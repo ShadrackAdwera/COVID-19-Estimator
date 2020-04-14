@@ -56,6 +56,7 @@ router.post('/json', (req, res) => {
 });
 
 router.post('/xml', (req, res, next) => {
+  res.setHeader('content-type', 'application/xml');
   const {
     name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
   } = req.body.region;
@@ -63,7 +64,7 @@ router.post('/xml', (req, res, next) => {
   const {
     periodType, timeToElapse, reportedCases, population, totalHospitalBeds
   } = req.body;
-  const stats = new Statistics({
+  const covid19 = new Statistics({
     region: {
       name,
       avgAge,
@@ -76,7 +77,7 @@ router.post('/xml', (req, res, next) => {
     population,
     totalHospitalBeds
   });
-  const estimated = estimator(stats);
+  const estimated = estimator(covid19);
   const { data } = estimated;
   const { region } = data;
   const { impact } = estimated;
@@ -85,12 +86,12 @@ router.post('/xml', (req, res, next) => {
     '?xml version="1.0" encoding="UTF-8"?': null,
     data: {
       '@': {
-        type: 'xml'
+        type: 'dict'
       },
       '#': {
         region: {
           '@': {
-            type: 'xml'
+            type: 'dict'
           },
           '#': {
             name: region.name,
@@ -109,7 +110,7 @@ router.post('/xml', (req, res, next) => {
     },
     impact: {
       '@': {
-        type: 'xml'
+        type: 'dict'
       },
       '#': {
         currentlyInfected: impact.currentlyInfected,
@@ -124,7 +125,7 @@ router.post('/xml', (req, res, next) => {
     },
     severeImpact: {
       '@': {
-        type: 'xml'
+        type: 'dict'
       },
       '#': {
         currentlyInfected: severeImpact.currentlyInfected,
