@@ -11,7 +11,11 @@ const mongoose = require('mongoose');
 
 const covidRoutes = require('./routes/covid');
 
-mongoose.connect('mongodb+srv://adwera:adwera@node-rest-api-mongo-0iss4.mongodb.net/test?retryWrites=true&w=majority');
+mongoose.connect('mongodb+srv://adwera:adwera@node-rest-api-mongo-0iss4.mongodb.net/test?retryWrites=true&w=majority',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -45,6 +49,7 @@ app.use((error, req, res, next) => {
       message: error.message
     }
   });
+  next();
 });
 
 module.exports = app;
