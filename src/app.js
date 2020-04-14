@@ -19,6 +19,7 @@ mongoose.connect('mongodb+srv://adwera:adwera@node-rest-api-mongo-0iss4.mongodb.
     useUnifiedTopology: true
   });
 
+app.use(morgan('dev'));
 app.use(morgan((tokens, req, res) => {
   const time = Math.trunc(tokens['response-time'](req, res));
   let formattedTime;
