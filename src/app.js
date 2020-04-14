@@ -9,7 +9,16 @@ const morgan = require('morgan');
 
 const bodyParser = require('body-parser');
 
+const mongoose = require('mongoose');
+
 const covidRoutes = require('./routes/covid');
+
+// connect to db
+mongoose.connect('mongodb+srv://adwera:adwera@node-rest-api-mongo-0iss4.mongodb.net/test?retryWrites=true&w=majority',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
 
 app.use(morgan('dev'));
 app.use(morgan((tokens, req, res) => {
