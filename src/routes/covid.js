@@ -84,8 +84,14 @@ router.post('/xml', (req, res, next) => {
   const obj = {
     '?xml version="1.0" encoding="UTF-8"?': null,
     data: {
+      '@': {
+        type: 'xml'
+      },
       '#': {
         region: {
+          '@': {
+            type: 'xml'
+          },
           '#': {
             name: region.name,
             avgAge: region.avgAge,
@@ -102,6 +108,9 @@ router.post('/xml', (req, res, next) => {
       }
     },
     impact: {
+      '@': {
+        type: 'xml'
+      },
       '#': {
         currentlyInfected: impact.currentlyInfected,
         infectionsByRequestedTime: impact.infectionsByRequestedTime,
@@ -114,6 +123,9 @@ router.post('/xml', (req, res, next) => {
 
     },
     severeImpact: {
+      '@': {
+        type: 'xml'
+      },
       '#': {
         currentlyInfected: severeImpact.currentlyInfected,
         infectionsByRequestedTime: severeImpact.infectionsByRequestedTime,
