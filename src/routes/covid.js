@@ -1,8 +1,6 @@
 
 const express = require('express');
 
-const mongoose = require('mongoose');
-
 const fs = require('fs');
 
 const objectToXml = require('object-to-xml');
@@ -32,14 +30,11 @@ router.post('', (req, res) => {
       error: err
     });
   });
-  res.status(201).json({
-    stats: estimator(stats)
-  });
+  res.status(201).send(estimator(stats));
 });
 
 router.post('/json', (req, res) => {
   const stats = new Statistics({
-    _id: new mongoose.Types.ObjectId(),
     region: {
       name: req.body.region.name,
       avgAge: req.body.region.avgAge,
@@ -57,9 +52,7 @@ router.post('/json', (req, res) => {
       error: err
     });
   });
-  res.status(201).json({
-    stats: estimator(stats)
-  });
+  res.status(201).send(estimator(stats));
 });
 
 router.post('/xml', (req, res, next) => {
