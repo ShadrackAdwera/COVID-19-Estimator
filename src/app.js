@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 const express = require('express');
 
 const app = express();
@@ -7,7 +7,11 @@ const morgan = require('morgan');
 
 const bodyParser = require('body-parser');
 
+const mongoose = require('mongoose');
+
 const covidRoutes = require('./routes/covid');
+
+mongoose.connect('mongodb+srv://adwera:adwera@node-rest-api-mongo-0iss4.mongodb.net/test?retryWrites=true&w=majority');
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
