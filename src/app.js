@@ -36,7 +36,7 @@ app.use(morgan((tokens, req, res) => {
     `${formattedTime}ms`
   ].join('\t\t');
   fs.appendFile('access.log', `${data}\n`, (err) => {
-    if (err) console.log(err);
+    if (err) throw new Error(err);
   });
 }));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -51,6 +51,7 @@ app.use((req, res, next) => {
     return res.status(200).json({});
   }
   next();
+  return res.statusCode;
 });
 
 app.use('/api/v1/on-covid-19', covidRoutes);

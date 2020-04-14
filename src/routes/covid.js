@@ -28,9 +28,7 @@ router.post('', (req, res) => {
     population: req.body.population,
     totalHospitalBeds: req.body.totalHospitalBeds
   });
-  stats.save().then((result) => {
-    console.log(result);
-  }).catch((err) => {
+  stats.save().then().catch((err) => {
     res.status(500).json({
       error: err
     });
@@ -55,14 +53,11 @@ router.post('/json', (req, res) => {
     population: req.body.population,
     totalHospitalBeds: req.body.totalHospitalBeds
   });
-  stats.save().then((result) => {
-    console.log(result);
-  }).catch((err) => {
+  stats.save().then().catch((err) => {
     res.status(500).json({
       error: err
     });
   });
-  res.send(estimator(stats));
   res.status(201).json({
     information: estimator(stats)
   });
