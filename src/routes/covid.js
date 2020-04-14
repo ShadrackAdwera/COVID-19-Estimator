@@ -1,12 +1,18 @@
 /* eslint-disable no-unused-vars */
+
 const express = require('express');
+
+const mongoose = require('mongoose');
 
 const estimator = require('../estimator');
 
 const router = express.Router();
 
+const Statistics = require('../models/statistics');
+
 router.post('/', (req, res, next) => {
-  const info = {
+  const stats = new Statistics({
+    _id: new mongoose.Types.ObjectId(),
     region: {
       name: req.body.region.name,
       avgAge: req.body.region.avgAge,
@@ -18,10 +24,15 @@ router.post('/', (req, res, next) => {
     reportedCases: req.body.reportedCases,
     population: req.body.population,
     totalHospitalBeds: req.body.totalHospitalBeds
-
-  };
-  res.status(201).json({
-    information: estimator(info)
+  });
+  stats.save().then((result) => {
+    res.status(201).json({
+      information: estimator(stats)
+    });
+  }).catch((err) => {
+    res.status(500).json({
+      error: err
+    });
   });
 });
 

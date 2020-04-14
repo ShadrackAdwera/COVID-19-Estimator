@@ -30,7 +30,6 @@ app.use((req, res, next) => {
     return res.status(200).json({});
   }
   next();
-  return res.status(200).json({});
 });
 
 app.use('/api/v1/on-covid-19', covidRoutes);

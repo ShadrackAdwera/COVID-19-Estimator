@@ -16,3 +16,5 @@ const statsSchema = mongoose.Schema({
   population: Number,
   totalHospitalBeds: Number
 });
+
+module.exports = mongoose.model('Statistics', statsSchema);
