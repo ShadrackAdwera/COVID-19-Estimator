@@ -4,6 +4,8 @@ const express = require('express');
 
 const mongoose = require('mongoose');
 
+const fs = require('fs');
+
 const logger = require('../logger');
 
 const estimator = require('../estimator');
@@ -28,7 +30,7 @@ router.post('', (req, res, next) => {
     totalHospitalBeds: req.body.totalHospitalBeds
   });
   stats.save().then((result) => {
-    logger.log(result);
+    console.log(result);
   }).catch((err) => {
     res.status(500).json({
       error: err
@@ -61,6 +63,7 @@ router.post('/json', (req, res, next) => {
       error: err
     });
   });
+  res.send(estimator(stats));
   res.status(201).json({
     information: estimator(stats)
   });
@@ -74,6 +77,15 @@ router.post('/xml', (req, res, next) => {
 
 router.get('/logs', (req, res, next) => {
   res.setHeader('content-type', 'text/plain');
+  const path = process.cwd();
+  const data = fs.readFileSync(`${path}/access.log`, 'utf8');
+  const lines = data.split('\n');
+
+  lines.splice(-1, 1);
+
+  const finalData = lines.join('\n');
+  res.end(finalData);
+  next();
 });
 
 module.exports = router;
