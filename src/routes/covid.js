@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const fs = require('fs');
 
-const logger = require('../logger');
+const objectToXml = require('object-to-xml');
 
 const estimator = require('../estimator');
 
@@ -70,9 +70,90 @@ router.post('/json', (req, res, next) => {
 });
 
 router.post('/xml', (req, res, next) => {
-  res.status(201).json({
+  const {
+    name, avgAge, avgDailyIncomeInUSD, avgDailyIncomePopulation
+  } = req.body.region;
 
+  const {
+    periodType, timeToElapse, reportedCases, population, totalHospitalBeds
+  } = req.body;
+  const stats = new Statistics({
+    region: {
+      name,
+      avgAge,
+      avgDailyIncomeInUSD,
+      avgDailyIncomePopulation
+    },
+    periodType,
+    timeToElapse,
+    reportedCases,
+    population,
+    totalHospitalBeds
   });
+  const estimated = estimator(stats);
+  const { data } = estimated;
+  const { region } = data;
+  const { impact } = estimated;
+  const { severeImpact } = estimated;
+  const obj = {
+    '?xml version="1.0" encoding="UTF-8"?': null,
+    data: {
+      '@': {
+        type: 'xml'
+      },
+      '#': {
+        region: {
+          '@': {
+            type: 'xml'
+          },
+          '#': {
+            name: region.name,
+            avgAge: region.avgAge,
+            avgDailyIncomeInUSD: region.avgDailyIncomeInUSD,
+            avgDailyIncomePopulation: region.avgDailyIncomePopulation
+          }
+
+        },
+        periodType: data.periodType,
+        timeToElapse: data.timeToElapse,
+        reportedCases: data.reportedCases,
+        population: data.population,
+        totalHospitalBeds: data.totalHospitalBeds
+      }
+    },
+    impact: {
+      '@': {
+        type: 'xml'
+      },
+      '#': {
+        currentlyInfected: impact.currentlyInfected,
+        infectionsByRequestedTime: impact.infectionsByRequestedTime,
+        severeCasesByRequestedTime: impact.severeCasesByRequestedTime,
+        hospitalBedsByRequestedTime: impact.hospitalBedsByRequestedTime,
+        casesForICUByRequestedTime: impact.casesForICUByRequestedTime,
+        casesForVentilatorsByRequestedTime: impact.casesForVentilatorsByRequestedTime,
+        dollarsInFlight: impact.dollarsInFlight
+      }
+
+    },
+    severeImpact: {
+      '@': {
+        type: 'xml'
+      },
+      '#': {
+        currentlyInfected: severeImpact.currentlyInfected,
+        infectionsByRequestedTime: severeImpact.infectionsByRequestedTime,
+        severeCasesByRequestedTime: severeImpact.severeCasesByRequestedTime,
+        hospitalBedsByRequestedTime: severeImpact.hospitalBedsByRequestedTime,
+        casesForICUByRequestedTime: severeImpact.casesForICUByRequestedTime,
+        casesForVentilatorsByRequestedTime: severeImpact.casesForVentilatorsByRequestedTime,
+        dollarsInFlight: severeImpact.dollarsInFlight
+      }
+
+    }
+  };
+  res.end(objectToXml(obj));
+  next();
 });
 
 router.get('/logs', (req, res, next) => {
